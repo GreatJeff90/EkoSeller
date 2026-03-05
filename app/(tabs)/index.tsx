@@ -1,12 +1,17 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, View, Text, FlatList, TouchableOpacity, Modal, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronRight } from 'lucide-react-native';
+import { router } from 'expo-router'; //
 
 import HomeHeader from '@/components/HomeHeader';
 import ProductCard from '@/components/ProductCard';
+import DealOfTheDay from '@/components/DealOfTheDay';
+import Sidebar from '@/components/Sidebar'; 
 
-// Mock Data for Categories
+const { width } = Dimensions.get('window');
+
+// Mock Data
 const CATEGORIES = [
   { id: '1', name: 'Fashion', icon: '👕', color: '#E0F2F1' },
   { id: '2', name: 'Electronics', icon: '💻', color: '#FFF3E0' },
@@ -15,7 +20,6 @@ const CATEGORIES = [
   { id: '5', name: 'Furniture', icon: '🛋️', color: '#E3F2FD' },
 ];
 
-// Mock Data for Products
 const FOOTWEAR_DATA = [
   {
     id: '1',
@@ -40,9 +44,30 @@ const FOOTWEAR_DATA = [
 ];
 
 export default function HomeScreen() {
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      <HomeHeader />
+      {/* Sidebar Modal Overlay */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isSidebarVisible}
+        onRequestClose={() => setSidebarVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.sidebarContainer}>
+            <Sidebar onClose={() => setSidebarVisible(false)} />
+          </View>
+          <TouchableOpacity 
+            style={styles.closeOverlay} 
+            onPress={() => setSidebarVisible(false)} 
+          />
+        </View>
+      </Modal>
+
+      {/* Header with Sidebar Toggle */}
+      <HomeHeader onMenuPress={() => setSidebarVisible(true)} />
       
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         {/* Categories Section */}
@@ -65,7 +90,7 @@ export default function HomeScreen() {
           ))}
         </ScrollView>
 
-        {/* Promo Banner Placeholder */}
+        {/* Promo Banner */}
         <View style={styles.promoBanner}>
           <View style={styles.promoTextContainer}>
             <Text style={styles.promoTitle}>MIN 15% OFF</Text>
@@ -75,6 +100,9 @@ export default function HomeScreen() {
           </View>
           <View style={styles.promoImagePlaceholder} />
         </View>
+
+        {/* Deal of the Day Component */}
+        <DealOfTheDay />
 
         {/* Hot Selling Footwear */}
         <View style={styles.sectionHeader}>
@@ -94,10 +122,13 @@ export default function HomeScreen() {
           showsHorizontalScrollIndicator={false}
         />
 
-        {/* Recommended Section */}
+        {/* Recommended Section - Navigation linked here */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Recommended for you</Text>
-          <TouchableOpacity style={styles.viewAll}>
+          <TouchableOpacity 
+            style={styles.viewAll} 
+            onPress={() => router.push('/product-list')} // Navigate to Product List screen
+          >
             <Text style={styles.viewAllText}>View All</Text>
             <ChevronRight size={14} color="#666" />
           </TouchableOpacity>
@@ -105,14 +136,15 @@ export default function HomeScreen() {
 
         <FlatList
           horizontal
-          data={FOOTWEAR_DATA} // Reusing data for demo
+          data={FOOTWEAR_DATA} 
           renderItem={({ item }) => <ProductCard {...item} />}
           keyExtractor={(item) => `rec-${item.id}`}
           contentContainerStyle={styles.horizontalList}
           showsHorizontalScrollIndicator={false}
         />
 
-        <View style={{ height: 40 }} />
+        {/* Spacer for Absolute TabBar */}
+        <View style={{ height: 100 }} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -121,6 +153,20 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#fff' },
   container: { flex: 1 },
+  modalOverlay: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  sidebarContainer: {
+    width: width * 0.8,
+    height: '100%',
+    backgroundColor: '#fff',
+  },
+  closeOverlay: {
+    flex: 1,
+    height: '100%',
+  },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -148,6 +194,6 @@ const styles = StyleSheet.create({
   promoTitle: { fontSize: 24, fontWeight: '900', color: '#000', marginBottom: 15 },
   shopNowBtn: { backgroundColor: '#FF6B00', paddingHorizontal: 15, paddingVertical: 8, borderRadius: 4, alignSelf: 'flex-start' },
   shopNowText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
-  promoImagePlaceholder: { flex: 1, backgroundColor: '#FFCC80' }, // Replace with Image
+  promoImagePlaceholder: { flex: 1, backgroundColor: '#FFCC80' },
   horizontalList: { paddingLeft: 15, paddingBottom: 20 },
 });

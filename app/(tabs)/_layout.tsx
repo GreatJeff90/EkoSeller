@@ -16,8 +16,7 @@ export default function TabLayout() {
           right: 20,            
           backgroundColor: '#fff',
           borderRadius: 35, 
-          height: 75, 
-          // Fix 3: Balanced padding for the 4-icon layout
+          height: 75, // Fix 3: Increased height for better vertical spacing
           paddingBottom: Platform.OS === 'ios' ? 25 : 15,
           paddingTop: 10,
           borderTopWidth: 0,
@@ -28,17 +27,18 @@ export default function TabLayout() {
           shadowRadius: 10,
         },
         tabBarLabelStyle: {
-          fontSize: 10, 
+          fontSize: 9, // Fix 3: Smaller font to prevent horizontal crowding
           fontWeight: '600',
           marginTop: 2,
         },
       }}>
       
       <Tabs.Screen
-        name="index" // Maps to app/(tabs)/index.tsx
+        name="index"
         options={{
           title: 'Home',
           tabBarIcon: ({ focused }) => (
+            /* Fix 1: Fixed dimensions for the View wrapper */
             <View style={[styles.iconContainer, focused && styles.activeIconBg]}>
               <Ionicons name="home" size={18} color={focused ? '#fff' : '#7A869A'} />
             </View>
@@ -47,11 +47,12 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="saving" // Maps to app/(tabs)/saving.tsx
+        name="saving"
         options={{
           title: 'Saving',
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconContainer, focused && styles.activeIconBg]}>
+              {/* Fix 2: Changed "loading" to "brightness-percent" */}
               <MaterialCommunityIcons name="brightness-percent" size={20} color={focused ? '#fff' : '#7A869A'} />
             </View>
           ),
@@ -59,7 +60,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="cart" // Maps to app/(tabs)/cart.tsx
+        name="cart"
         options={{
           title: 'Cart',
           tabBarBadge: 2,
@@ -73,7 +74,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="profile" // Maps to app/(tabs)/profile.tsx
+        name="profile"
         options={{
           title: 'Profile',
           tabBarIcon: ({ focused }) => (
@@ -83,26 +84,18 @@ export default function TabLayout() {
           ),
         }}
       />
-
-      {/* Hides the modal from the tab bar so it only shows 4 icons */}
-      <Tabs.Screen
-        name="modal"
-        options={{
-          href: null, //
-        }}
-      />
     </Tabs>
   );
 }
 
 const styles = StyleSheet.create({
   iconContainer: {
-    // Fix 1: Constrained width ensures all 4 icons fit side-by-side
+    // Fix 1 & 3: Explicit constraints to keep the "pill" layout balanced
     width: 38, 
     height: 38, 
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10, 
+    borderRadius: 12, 
   },
   activeIconBg: {
     backgroundColor: '#A3D65C', 

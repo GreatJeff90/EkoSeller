@@ -1,13 +1,21 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { Menu, Search, Bell, ShoppingBag } from 'lucide-react-native';
 
-export default function HomeHeader() {
+// Added interface for the menu toggle prop
+interface HomeHeaderProps {
+  onMenuPress?: () => void;
+}
+
+export default function HomeHeader({ onMenuPress }: HomeHeaderProps) {
   return (
     <View style={styles.headerContainer}>
       {/* Top Row */}
       <View style={styles.topRow}>
         <View style={styles.leftSection}>
-          <Menu size={24} color="#333" />
+          {/* Wrapped Menu icon in TouchableOpacity to trigger the sidebar */}
+          <TouchableOpacity onPress={onMenuPress} activeOpacity={0.7}>
+            <Menu size={24} color="#333" />
+          </TouchableOpacity>
           <Text style={styles.headerTitle}>Home</Text>
         </View>
         <View style={styles.rightIcons}>
@@ -42,9 +50,27 @@ const styles = StyleSheet.create({
   leftSection: { flexDirection: 'row', alignItems: 'center', gap: 15 },
   headerTitle: { fontSize: 20, fontWeight: '600' },
   rightIcons: { flexDirection: 'row', gap: 18 },
-  badge: { position: 'absolute', right: -5, top: -5, backgroundColor: '#FF6B00', borderRadius: 10, width: 14, height: 14, justifyContent: 'center', alignItems: 'center' },
+  badge: { 
+    position: 'absolute', 
+    right: -5, 
+    top: -5, 
+    backgroundColor: '#FF6B00', 
+    borderRadius: 10, 
+    width: 14, 
+    height: 14, 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
   badgeText: { color: '#fff', fontSize: 8, fontWeight: 'bold' },
-  searchSection: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F5F5F5', borderRadius: 8, paddingHorizontal: 10, borderWidth: 1, borderColor: '#EEE' },
+  searchSection: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    backgroundColor: '#F5F5F5', 
+    borderRadius: 8, 
+    paddingHorizontal: 10, 
+    borderWidth: 1, 
+    borderColor: '#EEE' 
+  },
   searchIcon: { marginRight: 10 },
   input: { flex: 1, height: 45, fontSize: 14 }
 });
