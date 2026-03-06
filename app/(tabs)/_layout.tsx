@@ -5,6 +5,7 @@ import { Platform, View, StyleSheet } from 'react-native';
 export default function TabLayout() {
   return (
     <Tabs
+    
       screenOptions={{
         tabBarActiveTintColor: '#A3D65C', 
         tabBarInactiveTintColor: '#7A869A', 
