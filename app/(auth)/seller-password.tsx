@@ -77,7 +77,7 @@ export default function CreatePasswordScreen() {
           {/* 4. Final Continue Button */}
           <TouchableOpacity 
             style={styles.continueBtn}
-            onPress={() => router.replace('/(tabs)')} // Replace ensures user can't go back to signup
+            onPress={() => router.replace('/(tabs)/seller' as any)} // Replace ensures user can't go back to signup
           >
             <Text style={styles.continueText}>Continue</Text>
           </TouchableOpacity>

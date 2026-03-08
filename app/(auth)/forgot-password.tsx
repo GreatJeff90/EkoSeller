@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function ForgotPasswordScreen() {
@@ -14,7 +14,7 @@ export default function ForgotPasswordScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={24} color="#555" />
         </TouchableOpacity>
-        
+        <Stack.Screen options={{ headerShown: false }} />
         <View style={styles.progressContainer}>
           <View style={[styles.stepCircle, styles.stepActive]}>
             <Text style={styles.activeStepText}>1</Text>

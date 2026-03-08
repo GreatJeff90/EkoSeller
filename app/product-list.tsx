@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import ProductCard from '@/components/ProductCard';
 
 const PRODUCTS = [
@@ -32,7 +32,7 @@ export default function ProductListScreen() {
           <Ionicons name="bag-outline" size={24} color="#333" />
         </View>
       </View>
-
+<Stack.Screen options={{ headerShown: false }} />
       <Text style={styles.itemCount}>{PRODUCTS.length} Items</Text>
 
       <FlatList

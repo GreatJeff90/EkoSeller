@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
@@ -12,6 +12,7 @@ export default function SignupScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* 1. Header with Back Button and Progress */}
+      <Stack.Screen options={{ headerShown: false }} />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={24} color="#999" />
@@ -72,11 +73,18 @@ export default function SignupScreen() {
 
         {/* 4. Action Button */}
         <TouchableOpacity 
-  style={styles.continueBtn}
-  onPress={() => router.push('/(auth)/personal-info')}
->
-  <Text style={styles.continueText}>Continue</Text>
-</TouchableOpacity>
+          style={[styles.continueBtn, !selection && styles.disabledBtn]}
+          disabled={!selection}
+          onPress={() => {
+            if (selection === 'buyer') {
+              router.push('/(auth)/personal-info');
+            } else if (selection === 'seller') {
+              router.push('/(auth)/seller-info');
+            }
+          }}
+        >
+          <Text style={styles.continueText}>Continue</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
           <Text style={styles.footerText}>

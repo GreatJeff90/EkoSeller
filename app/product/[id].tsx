@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import ProductCard from '@/components/ProductCard'; 
 
 const { width } = Dimensions.get('window');
@@ -39,7 +39,7 @@ export default function ProductDetails() {
             <TouchableOpacity style={styles.iconCircle}><Ionicons name="bag-outline" size={24} color="#333" /></TouchableOpacity>
           </View>
         </View>
-
+<Stack.Screen options={{ headerShown: false }} />
         {/* Main Product Image */}
         <Image 
           source={{ uri: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600' }} 

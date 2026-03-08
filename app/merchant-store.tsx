@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import ProductCard from '@/components/ProductCard';
 
 const SELLER_PRODUCTS = [
@@ -22,7 +22,7 @@ export default function MerchantStore() {
         <Text style={styles.headerTitle}>Merchant Store</Text>
         <Ionicons name="search-outline" size={24} color="#333" />
       </View>
-
+<Stack.Screen options={{ headerShown: false }} />
       <FlatList
         ListHeaderComponent={
           <View style={styles.profileSection}>

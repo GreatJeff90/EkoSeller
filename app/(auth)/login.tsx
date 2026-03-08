@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { Ionicons, FontAwesome, AntDesign } from '@expo/vector-icons';
 
 export default function LoginScreen() {
@@ -15,7 +15,7 @@ export default function LoginScreen() {
           <Ionicons name="chevron-back" size={24} color="#555" />
         </TouchableOpacity>
       </View>
-
+<Stack.Screen options={{ headerShown: false }} />
       <View style={styles.content}>
         <Text style={styles.title}>Welcome back</Text>
 

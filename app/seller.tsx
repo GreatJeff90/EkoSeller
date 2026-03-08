@@ -1,60 +1,17 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View, Text, FlatList, TouchableOpacity, Modal, Dimensions, Image, Platform } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, FlatList, TouchableOpacity, Modal, Dimensions, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router, usePathname } from 'expo-router';
-import { MaterialCommunityIcons, Ionicons, Feather } from '@expo/vector-icons'; 
+import { router, Stack } from 'expo-router';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 import HomeHeader from '@/components/HomeHeader';
 import ProductCard from '@/components/ProductCard';
 import DealOfTheDay from '@/components/DealOfTheDay';
 import Sidebar from '@/components/Sidebar'; 
+// Import the SellerTabBar component
+import SellerTabBar from '@/components/SellerTabBar'; 
 
 const { width } = Dimensions.get('window');
-
-// --- Custom Tab Bar Component ---
-const CustomTabBar = () => {
-  const pathname = usePathname();
-
-  const tabs = [
-    { name: 'Home', icon: 'home', type: 'Ionicons', route: '/' },
-    { name: 'Saving', icon: 'loading', type: 'MaterialCommunityIcons', route: '/saving' },
-    { name: 'Cart', icon: 'shopping-cart', type: 'Feather', route: '/cart', badge: 2 },
-    { name: 'Profile', icon: 'person-outline', type: 'Ionicons', route: '/profile' },
-  ];
-
-  return (
-    <View style={tabStyles.container}>
-      <View style={tabStyles.tabBar}>
-        {tabs.map((tab) => {
-          const isActive = tab.name === 'Home'; // Hardcoded active for Home demo
-          
-          return (
-            <TouchableOpacity 
-              key={tab.name} 
-              onPress={() => tab.route !== '/' && router.push(tab.route as any)}
-              style={tabStyles.tabItem}
-            >
-              <View style={[tabStyles.iconWrapper, isActive && tabStyles.activeIconBg]}>
-                {tab.type === 'Ionicons' && <Ionicons name={tab.icon as any} size={20} color={isActive ? '#fff' : '#7A869A'} />}
-                {tab.type === 'MaterialCommunityIcons' && <MaterialCommunityIcons name={tab.icon as any} size={20} color={isActive ? '#fff' : '#7A869A'} />}
-                {tab.type === 'Feather' && <Feather name={tab.icon as any} size={20} color={isActive ? '#fff' : '#7A869A'} />}
-                
-                {tab.badge && (
-                  <View style={tabStyles.badge}>
-                    <Text style={tabStyles.badgeText}>{tab.badge}</Text>
-                  </View>
-                )}
-              </View>
-              <Text style={[tabStyles.tabLabel, isActive && tabStyles.activeLabel]}>
-                {tab.name}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </View>
-  );
-};
 
 // --- Data Constants ---
 const CATEGORIES = [
@@ -66,10 +23,8 @@ const CATEGORIES = [
 ];
 
 const FOOTWEAR_DATA = [
-  { id: '1', title: 'Adidas white sneakers for men', price: 6008, oldPrice: 8006, discount: '50%', rating: 4.8, reviews: 785, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=300&auto=format&fit=crop' },
-  { id: '2', title: 'Nike black running shoes for men', price: 7005, oldPrice: 9000, discount: '20%', rating: 4.2, reviews: 422, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=300&auto=format&fit=crop' },
-  { id: '3', title: 'Nike black running shoes for men', price: 7005, oldPrice: 9000, discount: '20%', rating: 4.2, reviews: 422, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=300&auto=format&fit=crop' },
-  { id: '4', title: 'Nike black running shoes for men', price: 7005, oldPrice: 9000, discount: '20%', rating: 4.2, reviews: 422, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=300&auto=format&fit=crop' },
+  { id: '1', title: 'Adidas white sneakers for men', price: 6008, oldPrice: 8006, discount: '30%', rating: 4.8, reviews: 785, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff' },
+  { id: '2', title: 'Nike black running shoes for men', price: 7005, oldPrice: 9000, discount: '20%', rating: 4.2, reviews: 422, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff' },
 ];
 
 export default function HomeScreen() {
@@ -95,6 +50,7 @@ export default function HomeScreen() {
           </View>
         </Modal>
 
+        <Stack.Screen options={{ headerShown: false }} />
         <HomeHeader onMenuPress={() => setSidebarVisible(true)} />
         
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
@@ -127,14 +83,13 @@ export default function HomeScreen() {
             </View>
             <View style={styles.promoRight}>
               <Image 
-                source={require('../../assets/images/running-shoes.png')} 
+                source={require('../assets/images/running-shoes.png')} 
                 style={styles.promoImage}
                 resizeMode="cover"
               />
             </View>
           </View>
 
-          {/* Banner Pagination Dots */}
           <View style={styles.bannerPagination}>
             <View style={[styles.bannerDot, styles.activeBannerDot]} />
             <View style={styles.bannerDot} />
@@ -144,7 +99,7 @@ export default function HomeScreen() {
 
           <DealOfTheDay />
 
-          {/* Hot Selling Footwear Slider */}
+          {/* Footwear Section */}
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Hot Selling Footwear</Text>
             <TouchableOpacity style={styles.viewAllBtn}>
@@ -189,60 +144,16 @@ export default function HomeScreen() {
             showsHorizontalScrollIndicator={false}
           />
 
-          {/* Bottom TabBar Spacer to prevent content being hidden behind the bar */}
-          <View style={{ height: 130 }} />
+          {/* Extra Bottom Padding to prevent content from being hidden behind the Tab Bar */}
+          <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
 
-      {/* Floating Tab Bar Component */}
-      <CustomTabBar />
+      {/* Place the TabBar here, outside the ScrollView but inside the main View */}
+      <SellerTabBar />
     </View>
   );
 }
-
-const tabStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    bottom: 30,
-    left: 20,
-    right: 20,
-    alignItems: 'center',
-  },
-  tabBar: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 35,
-    height: 75,
-    width: '100%',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    elevation: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-  },
-  tabItem: { alignItems: 'center', justifyContent: 'center', flex: 1 },
-  iconWrapper: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 12, marginBottom: 2 },
-  activeIconBg: { backgroundColor: '#A3D65C' },
-  tabLabel: { fontSize: 10, color: '#7A869A', fontWeight: '600' },
-  activeLabel: { color: '#A3D65C' },
-  badge: {
-    position: 'absolute',
-    top: -2,
-    right: -2,
-    backgroundColor: '#E57373',
-    borderRadius: 8,
-    width: 16,
-    height: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: '#fff',
-  },
-  badgeText: { color: '#fff', fontSize: 8, fontWeight: 'bold' },
-});
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#fff' },

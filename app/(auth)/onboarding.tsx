@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView, Platform, Dimensions } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
@@ -18,7 +18,7 @@ export default function OnboardingScreen() {
           resizeMode="contain" 
         />
       </View>
-
+<Stack.Screen options={{ headerShown: false }} />
       {/* 2. Content Wrapper for side spacing */}
       <View style={styles.contentWrapper}>
         {/* Pagination Dots */}
